@@ -16,8 +16,8 @@ const MenuNavigator1 = createStackNavigator({
 
 const HomeNavigator1 = createStackNavigator({
     Home: { screen: Home }
-}
-);
+});
+
 const MenuNavigator = createAppContainer(MenuNavigator1);
 const HomeNavigator = createAppContainer(HomeNavigator1);
 
@@ -42,10 +42,7 @@ const MainNavigator1 = createDrawerNavigator({
     drawerBackgroundColor: '#D1C4E9'
 });
 
-
 const MainNavigator = createAppContainer(MainNavigator1);
-
-
 
 class Main extends Component {
 
