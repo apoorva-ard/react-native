@@ -13,6 +13,30 @@ function History() {
     );
 } 
 
+function RenderLeaders(props) {
+    const renderLeader = ({ item, index }) => {
+        return (
+            <ListItem
+                key={index}
+                title={item.name}
+                subtitle={item.description}
+                hideChevron={true}
+                leftAvatar={{ source: require('./images/alberto.png') }}
+            />
+        );
+    }
+
+    return (
+        <Card title="Corporate Leadership" titleStyle={{ fontWeight: 'bold', fontSize: 20 }}>
+            <FlatList
+                data={props.leaders}
+                renderItem={renderLeader}
+                keyExtractor={item => item.id.toString()}
+            />
+        </Card>
+    );
+}
+
 class About extends Component {
 
     constructor(props) {
@@ -35,28 +59,10 @@ class About extends Component {
 
     render() {
 
-        const renderLeader = ({ item, index }) => {
-            return (
-                <ListItem
-                    key={index}
-                    title={item.name}
-                    subtitle={item.description}
-                    hideChevron={true}
-                    leftAvatar={{ source: require('./images/alberto.png') }}
-                />
-            );
-        }
-
         return (
             <ScrollView>
-                <History/>
-                <Card title="Corporate Leadership" titleStyle={{ fontWeight: 'bold', fontSize: 20 }}>
-                    <FlatList
-                        data={this.state.leaders}
-                        renderItem={renderLeader}
-                        keyExtractor={item => item.id.toString()}
-                    />
-                </Card>
+                <History />
+                <RenderLeaders leaders={this.state.leaders} />
             </ScrollView>
         );
     }
