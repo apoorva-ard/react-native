@@ -22,7 +22,7 @@ function RenderDish(props) {
                     name={props.favorite? "heart": "heart-o"}
                     type="font-awesome"
                     color="#f50"
-                    onPress={() => props.favorite ? console.log("Already favourite") : props.onPress()}
+                    onPress={() => props.favorite ? cons ole.log("Already favourite") : props.onPress()}
                 />
             </Card>
         );
