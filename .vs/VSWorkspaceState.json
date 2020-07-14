@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\components",
+    "\\components\\images",
+    "\\redux",
     "\\shared"
   ],
-  "SelectedNode": "\\components\\DishDetailComponent.js",
+  "SelectedNode": "\\shared\\baseUrl.js",
   "PreviewInSolutionExplorer": false
 }
