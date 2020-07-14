@@ -12,6 +12,7 @@ import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 import Reservation from './ReservationComponent';
+import Favorites from './FavoritesComponent';
 
 const mapStateToProps = state => {
     return {
@@ -97,7 +98,7 @@ const AboutNavigator = createAppContainer(createStackNavigator({
 }));
 
 const ReservationNavigator = createAppContainer(createStackNavigator({
-    About: {
+    Reservation: {
         screen: Reservation,
         navigationOptions: ({ navigation }) => ({
             headerLeft: () => (
@@ -106,6 +107,22 @@ const ReservationNavigator = createAppContainer(createStackNavigator({
                     size={26}
                     color="white"
                     onPress={() => navigation.toggleDrawer()}
+                />
+            )
+        })
+    }
+}));
+
+const FavoritesNavigator = createAppContainer(createStackNavigator({
+    Favorites: {
+        screen: Favorites,
+        navigationOptions: ({ navigation }) => ({
+            headerLeft: () => (
+                <Icon
+                    name="menu"
+                    size={24}
+                    iconStyle={{ color: 'white' }}
+                    onPress={() => navigation.navigate('DrawerToggle')}
                 />
             )
         })
@@ -193,6 +210,22 @@ const MainNavigator = createAppContainer(createDrawerNavigator({
                 />
             ),
         },
+    },
+    Favorites:
+    {
+        screen: FavoritesNavigator,
+        navigationOptions: {
+            title: 'My Favorites',
+            drawerLabel: 'My Favorites',
+            drawerIcon: ({ tintColor, focused }) => (
+                <Icon
+                    name='heart'
+                    type='font-awesome'
+                    size={24}
+                    iconStyle={{ color: tintColor }}
+                />
+            ),
+        }
     },
     Reservation:
     {
