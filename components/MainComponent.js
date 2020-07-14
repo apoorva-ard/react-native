@@ -11,6 +11,7 @@ import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+import Reservation from './ReservationComponent';
 
 const mapStateToProps = state => {
     return {
@@ -91,7 +92,24 @@ const AboutNavigator = createAppContainer(createStackNavigator({
                     onPress={() => navigation.toggleDrawer()}
                 />
             )
-        }) }
+        })
+    }
+}));
+
+const ReservationNavigator = createAppContainer(createStackNavigator({
+    About: {
+        screen: Reservation,
+        navigationOptions: ({ navigation }) => ({
+            headerLeft: () => (
+                <Icon
+                    name="menu"
+                    size={26}
+                    color="white"
+                    onPress={() => navigation.toggleDrawer()}
+                />
+            )
+        })
+    }
 }));
 
 const CustomDrawerContentComponent = (props) => (
@@ -175,6 +193,22 @@ const MainNavigator = createAppContainer(createDrawerNavigator({
                 />
             ),
         },
+    },
+    Reservation:
+    {
+        screen: ReservationNavigator,
+        navigationOptions: {
+            title: 'Reserve Table',
+            drawerLabel: 'Reserve Table',
+            drawerIcon: ({ tintColor, focused }) => (
+                <Icon
+                    name='cutlery'
+                    type='font-awesome'
+                    size={24}
+                    iconStyle={{ color: tintColor }}
+                />
+            ),
+        }
     }
 }, {
         drawerBackgroundColor: '#D1C4E9',
