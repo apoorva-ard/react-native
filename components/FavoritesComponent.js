@@ -6,6 +6,7 @@ import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import Swipeout from 'react-native-swipeout';
 import { deleteFavorite } from '../redux/ActionCreators';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -44,7 +45,7 @@ class Favorites extends Component {
                     onPress: () => {
                         Alert.alert(
                             'Delete Favourite?',
-                            'Are you sure you want to remove ' + item.name + 'from favourites?',
+                            'Are you sure you want to remove ' + item.name + ' from favourites?',
                             [
                                 {
                                     text: 'Cancel',
@@ -90,11 +91,13 @@ class Favorites extends Component {
         }
         else {
             return (
-                <FlatList 
-                    data={this.props.dishes.dishes.filter(dish => this.props.favorites.some(el => el === dish.id))}
-                    renderItem={renderMenuItem}
-                    keyExtractor={item => item.id.toString()}
-                    />
+                <Animatable.View animation="fadeInRightBig" duration={2000}>
+                    <FlatList 
+                        data={this.props.dishes.dishes.filter(dish => this.props.favorites.some(el => el === dish.id))}
+                        renderItem={renderMenuItem}
+                        keyExtractor={item => item.id.toString()}
+                        />
+                </Animatable.View>
             );
         }
     }

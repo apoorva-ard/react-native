@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite, postComment } from '../redux/ActionCreators';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -25,31 +26,33 @@ function RenderDish(props) {
 
     if (dish != null) {
         return (
-            <Card
-                featuredTitle={dish.name}
-                image={{ uri: baseUrl + dish.image }}>
-                <Text style={{ margin: 10 }}>
-                    {dish.description}
-                </Text>
-                <View style={styles.icons}>
-                <Icon
-                    raised
-                    reverse
-                    name={props.favorite ? "heart" : "heart-o"}
-                    type="font-awesome"
-                    color="#f50"
-                    onPress={() => { props.favorite ? console.log("Already favourite") : props.onPress() }}
+            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                <Card
+                    featuredTitle={dish.name}
+                    image={{ uri: baseUrl + dish.image }}>
+                    <Text style={{ margin: 10 }}>
+                        {dish.description}
+                    </Text>
+                    <View style={styles.icons}>
+                    <Icon
+                        raised
+                        reverse
+                        name={props.favorite ? "heart" : "heart-o"}
+                        type="font-awesome"
+                        color="#f50"
+                        onPress={() => { props.favorite ? console.log("Already favourite") : props.onPress() }}
+                        />
+                    <Icon
+                        raised
+                        reverse
+                        name="pencil"
+                        type="font-awesome"
+                        color="#512DA8"
+                        onPress={() => {props.onPressComment()}}
                     />
-                <Icon
-                    raised
-                    reverse
-                    name="pencil"
-                    type="font-awesome"
-                    color="#512DA8"
-                    onPress={() => {props.onPressComment()}}
-                />
-                </View>
-            </Card>
+                    </View>
+                </Card>
+            </Animatable.View>
         );
     }
     else {
@@ -61,15 +64,17 @@ function RenderComments(props) {
 
     const renderCommentItem = ({ item, index }) => {
         return (
-            <View key={index} style={{ margin: 10 }}>
-                <Text style={{ fontSize: 14 }}>{item.comment}</Text>
-                <Rating
-                    style={{ paddingVertical: 10, flex: 1, flexDirection: 'row' }}
-                    imageSize={20}
-                    readonly
-                    startingValue={item.rating}/>
-                <Text style={{ fontSize: 12 }}>{'-- ' + item.author + ', ' + item.date} </Text>
-            </View>
+            <Animatable.View animation = "fadeInUp" duration = { 2000} delay = { 1000} >     
+                <View key={index} style={{ margin: 10 }}>
+                    <Text style={{ fontSize: 14 }}>{item.comment}</Text>
+                    <Rating
+                        style={{ paddingVertical: 10, flex: 1, flexDirection: 'row' }}
+                        imageSize={20}
+                        readonly
+                        startingValue={item.rating}/>
+                    <Text style={{ fontSize: 12 }}>{'-- ' + item.author + ', ' + item.date} </Text>
+                </View>
+            </ Animatable.View>
             );
     };
     return (
