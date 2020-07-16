@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
+import Login from './LoginComponent';
 
 const mapStateToProps = state => {
     return {
@@ -63,7 +64,24 @@ const HomeNavigator = createAppContainer(createStackNavigator({
                     onPress={() => navigation.toggleDrawer()}
                 />
             )
-        }) }
+        })
+    }
+}));
+
+const LoginNavigator = createAppContainer(createStackNavigator({
+    Login: {
+        screen: Login,
+        navigationOptions: ({ navigation }) => ({
+            headerLeft: () => (
+                <Icon
+                    name="menu"
+                    size={26}
+                    color="white"
+                    onPress={() => navigation.toggleDrawer()}
+                />
+            )
+        })
+    }
 }));
 
 const ContactNavigator = createAppContainer(createStackNavigator({
@@ -146,6 +164,22 @@ const CustomDrawerContentComponent = (props) => (
     );
 
 const MainNavigator = createAppContainer(createDrawerNavigator({
+    Login:
+    {
+        screen: LoginNavigator,
+        navigationOptions: {
+            title: 'Login',
+            drawerLabel: 'Login',
+            drawerIcon: ({ tintColor, focused }) => (
+                <Icon
+                    name='sign-in'
+                    type='font-awesome'
+                    size={24}
+                    color={tintColor}
+                />
+            ),
+        }
+    },
     Home:
     {
         screen: HomeNavigator,
@@ -155,7 +189,7 @@ const MainNavigator = createAppContainer(createDrawerNavigator({
             drawerIcon: ({ tintColor, focused }) => (
                 <Icon
                     name='home'
-                    type='font-awsome'
+                    type='font-awesome'
                     size={24}
                     color={tintColor}
                 />
