@@ -29,7 +29,12 @@ function RenderDish(props) {
         else
             return false;
     }
-
+    const recognizeComment = ({ moveX, moveY, dx, dy }) => {
+        if (dx > 200)
+            return true;
+        else
+            return false;
+    }
     handleViewRef = ref => this.view = ref;
 
     const panResponder = PanResponder.create({
@@ -52,6 +57,8 @@ function RenderDish(props) {
                     ],
                     { cancelable: false }
                 );
+            if (recognizeComment(gestureState))
+                props.onPressComment();
             return true;
         }
     })
@@ -105,7 +112,7 @@ function RenderComments(props) {
                         style={{ paddingVertical: 10, flex: 1, flexDirection: 'row' }}
                         imageSize={20}
                         readonly
-                        startingValue={item.rating}/>
+                        startingValue={Number(item.rating)}/>
                     <Text style={{ fontSize: 12 }}>{'-- ' + item.author + ', ' + item.date} </Text>
                 </View>
             </ Animatable.View>

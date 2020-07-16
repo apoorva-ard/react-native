@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native';
 import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
+import * as Animatable from 'react-native-animatable';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 
 class Reservation extends Component {
@@ -13,7 +14,7 @@ class Reservation extends Component {
             guests: 1,
             smoking: false,
             date: new Date(),
-            showModal: false
+            //showModal: false
         }
     }
 
@@ -29,12 +30,22 @@ class Reservation extends Component {
     };
 
     toggleModal() {
-        this.setState({ showModal: !this.state.showModal });
+       // this.setState({ showModal: !this.state.showModal });
     }
 
     handleReservation() {
         console.log(JSON.stringify(this.state));
-        this.toggleModal();
+        const smoke = this.state.smoking ? 'Yes' : 'No';
+        Alert.alert(
+            'Your Reservation',
+            'Number of Guests: ' + this.state.guests + '\nSmoking: ' + smoke + '\nDate and Time: ' + this.state.date,
+            [
+                { text: 'Cancel', onPress: () => { console.log('Cancel Pressed'); this.resetForm() }, style: 'cancel' },
+                { text: 'OK', onPress: () => { this.resetForm() } },
+            ],
+            { cancelable: false }
+        );
+       // this.toggleModal();
     }
 
     resetForm() {
@@ -49,79 +60,64 @@ class Reservation extends Component {
     render() {
         return(
             <ScrollView>
-                <View style={styles.formRow}>
-                <Text style={styles.formLabel}>Number of Guests</Text>
-                <Picker
-                    style={styles.formItem}
-                    selectedValue={this.state.guests}
-                    onValueChange={(itemValue, itemIndex) => this.setState({guests: itemValue})}>
-                    <Picker.Item label="1" value="1" />
-                    <Picker.Item label="2" value="2" />
-                    <Picker.Item label="3" value="3" />
-                    <Picker.Item label="4" value="4" />
-                    <Picker.Item label="5" value="5" />
-                    <Picker.Item label="6" value="6" />
-                </Picker>
-                </View>
-                <View style={styles.formRow}>
-                <Text style={styles.formLabel}>Smoking/Non-Smoking?</Text>
-                <Switch
-                    style={styles.formItem}
-                    value={this.state.smoking}
-                    trackColor='#512DA8'
-                    onValueChange={(value) => this.setState({smoking: value})}>
-                </Switch>
-                </View>
-                <View style={styles.formRow}>
-                <Text style={styles.formLabel}>Date and Time</Text>
-                <DatePicker
-                    style={{flex: 2, marginRight: 20}}
-                    date={this.state.date}
-                    format=''
-                    mode="datetime"
-                    placeholder="select date and Time"
-                    minDate="2017-01-01"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                        // ... You can check the source to find the other keys. 
-                    }}
-                    onChange={(date) => {this.setState({date: date})}}
-                    />
-                </View>
-                <View style={styles.formRow}>
-                <Button
-                    onPress={() => this.handleReservation()}
-                    title="Reserve"
-                    color="#512DA8"
-                    accessibilityLabel="Learn more about this purple button"
-                    />
-                </View>
-                <Modal animationType={"slide"} transparent={false}
-                    visible={this.state.showModal}
-                    onDismiss={() => this.toggleModal()}
-                    onRequestClose={() => this.toggleModal()}>
-                    <View style={styles.modal}>
-                        <Text style={styles.modalTitle}>Your Reservation</Text>
-                        <Text style={styles.modalText}>Number of Guests: {this.state.guests}</Text>
-                        <Text style={styles.modalText}>Smoking?: {this.state.smoking ? 'Yes' : 'No'}</Text>
-                        <Text style={styles.modalText}>Date and Time: {(this.state.date)[1]}</Text>
-                        <Button
-                            onPress={() => { this.toggleModal(); this.resetForm(); }}
-                            color="#512DA8"
-                            title="Close"
+                <Animatable.View animation="zoomIn" duration={2000} delay={1000} useNativeDriver={true}>
+                    <View style={styles.formRow}>
+                    <Text style={styles.formLabel}>Number of Guests</Text>
+                    <Picker
+                        style={styles.formItem}
+                        selectedValue={this.state.guests}
+                        onValueChange={(itemValue, itemIndex) => this.setState({guests: itemValue})}>
+                        <Picker.Item label="1" value="1" />
+                        <Picker.Item label="2" value="2" />
+                        <Picker.Item label="3" value="3" />
+                        <Picker.Item label="4" value="4" />
+                        <Picker.Item label="5" value="5" />
+                        <Picker.Item label="6" value="6" />
+                    </Picker>
+                    </View>
+                    <View style={styles.formRow}>
+                    <Text style={styles.formLabel}>Smoking/Non-Smoking?</Text>
+                    <Switch
+                        style={styles.formItem}
+                        value={this.state.smoking}
+                        trackColor='#512DA8'
+                        onValueChange={(value) => this.setState({smoking: value})}>
+                    </Switch>
+                    </View>
+                    <View style={styles.formRow}>
+                    <Text style={styles.formLabel}>Date and Time</Text>
+                    <DatePicker
+                        style={{flex: 2, marginRight: 20}}
+                        date={this.state.date}
+                        format=''
+                        mode="datetime"
+                        placeholder="select date and Time"
+                        minDate="2017-01-01"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                marginLeft: 36
+                            }
+                        }}
+                        onChange={(date) => {this.setState({date: date})}}
                         />
                     </View>
-                </Modal>
+                    <View style={styles.formRow}>
+                    <Button
+                        onPress={() => this.handleReservation()}
+                        title="Reserve"
+                        color="#512DA8"
+                        accessibilityLabel="Learn more about this purple button"
+                        />
+                    </View>
+                </Animatable.View>
             </ScrollView>
         );
     }
@@ -171,4 +167,23 @@ export default Reservation;
     is24Hour={true}
     display="default"
     onChange={(event, date) => this.state.date = selectedDate || date}
-    />*/
+    />
+    
+<Modal animationType={"slide"} transparent={false}
+    visible={this.state.showModal}
+    onDismiss={() => this.toggleModal()}
+    onRequestClose={() => this.toggleModal()}>
+    <View style={styles.modal}>
+        <Text style={styles.modalTitle}>Your Reservation</Text>
+        <Text style={styles.modalText}>Number of Guests: {this.state.guests}</Text>
+        <Text style={styles.modalText}>Smoking?: {this.state.smoking ? 'Yes' : 'No'}</Text>
+        <Text style={styles.modalText}>Date and Time: {(this.state.date)[1]}</Text>
+        <Button
+            onPress={() => { this.toggleModal(); this.resetForm(); }}
+            color="#512DA8"
+            title="Close"
+        />
+    </View>
+</Modal>
+
+    */
