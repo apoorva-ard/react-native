@@ -72,6 +72,12 @@ const LoginNavigator = createAppContainer(createStackNavigator({
     Login: {
         screen: Login,
         navigationOptions: ({ navigation }) => ({
+            headerStyle: {
+                backgroundColor: "#512DA8"
+            },
+            headerTitleStyle: {
+                color: "#fff"
+            },
             headerLeft: () => (
                 <Icon
                     name="menu"
