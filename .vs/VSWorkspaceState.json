@@ -2,10 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\components",
-    "\\components\\images",
     "\\redux",
     "\\shared"
   ],
-  "SelectedNode": "\\components\\DishDetailComponent.js",
+  "SelectedNode": "\\components\\ReservationComponent.js",
   "PreviewInSolutionExplorer": false
 }
