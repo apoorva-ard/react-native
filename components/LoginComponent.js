@@ -129,9 +129,8 @@ class RegisterTab extends Component {
 
     getImageFromCamera = async () => {
         const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
-        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-        if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+        if (cameraPermission.status === 'granted') {
             let capturedImage = await ImagePicker.launchCameraAsync({
                 allowsEditing: true,
                 aspect: [4, 3],
@@ -139,6 +138,22 @@ class RegisterTab extends Component {
             if (!capturedImage.cancelled) {
                 console.log(capturedImage);
                 this.processImage(capturedImage.uri);
+            }
+        }
+    }
+
+    getImageFromGallery = async () => {
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (cameraRollPermission.status === 'granted') {
+            let obtainedImage = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [4, 3],
+            });
+            if (!obtainedImage.cancelled) {
+                console.log(obtainedImage);
+                this.processImage(obtainedImage.uri);
             }
         }
     }
@@ -187,15 +202,25 @@ class RegisterTab extends Component {
             <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
-                        <Image
-                            source={{ uri: this.state.imageUrl }}
-                            loadingIndicatorSource={require('./images/logo.png')}
-                            style={styles.image}
-                        />
-                        <Button
-                            title="Camera"
-                            onPress={this.getImageFromCamera}
-                        />
+                        <View style={styles.topRow}>
+                            <Image
+                                source={{ uri: this.state.imageUrl }}
+                                loadingIndicatorSource={require('./images/logo.png')}
+                                style={styles.image}
+                                />
+                        </View>
+                        <View style={styles.topRow}>
+                            <Button
+                                title="Camera"
+                                onPress={this.getImageFromCamera}
+                                />
+                        </View>
+                        <View style={styles.topRow}>
+                            <Button
+                                title="Gallery"
+                                onPress={this.getImageFromGallery}
+                                />
+                        </View>
                     </View>
                     <Input
                         placeholder="Username"
@@ -282,7 +307,12 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         flexDirection: 'row',
-        margin: 20
+        margin: 20,
+    },
+    topRow: {
+        flex: 1,
+        marginLeft: 20,
+        marginRight: 20
     },
     image: {
         margin: 10,

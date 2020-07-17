@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert, ToastAndroid } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
+import * as Calendar from 'expo-calendar';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 
 class Reservation extends Component {
@@ -43,12 +43,38 @@ class Reservation extends Component {
             'Number of Guests: ' + this.state.guests + '\nSmoking: ' + smoke + '\nDate and Time: ' + this.state.date,
             [
                 { text: 'Cancel', onPress: () => { console.log('Cancel Pressed'); this.resetForm() }, style: 'cancel' },
-                { text: 'OK', onPress: () => { this.resetForm() } },
+                { text: 'OK', onPress: () => { this.resetForm(); this.obtainCalendarPermission(); }},
             ],
             { cancelable: false }
         );
-        this.presentLocalNotification(this.state.date)
+        this.presentLocalNotification(this.state.date);
        // this.toggleModal();
+    }
+
+    obtainCalendarPermission = async () => {
+        const calenderPermission = await Calendar.requestCalendarPermissionsAsync();
+        if (calenderPermission.status === 'granted') {
+            const details = {
+                title: 'Con Fusion Table Reservation',
+                startDate: this.state.date,
+                endDate: (Date.parse(this.state.date) + (2 * 60 * 60 * 1000)),
+                timeZone: 'Asia/Kolkata',
+                location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong' 
+            }
+            this.addReservationToCalendar(details);
+        }
+    } 
+
+    addReservationToCalendar = async (details) => {
+
+        const calendars = await Calendar.getCalendarsAsync();
+        console.log(calendars);
+        const defaultCalendars = calendars.filter(each => each.source.type === 'LOCAL' || each.source.name === 'Default');
+        const cid = defaultCalendars[0].id;
+
+        const eventId = await Calendar.createEventAsync(cid, details);
+        ToastAndroid.show('Event added to your calendar!', ToastAndroid.LONG)
+        console.log('Event id : ' + eventId);
     }
 
     resetForm() {
